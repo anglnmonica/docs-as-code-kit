@@ -24,7 +24,18 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ## Unreleased
 
-Nothing yet.
+### Added
+
+- **research-doc skill,** which researches a topic on the web, in research
+  papers, and in published white papers and solution briefs, then drafts a
+  white paper or solution brief. It saves research notes with a source for
+  every finding, cites every outside fact in the draft, and never copies
+  other documents.
+
+### Changed
+
+- write-doc now points to research-doc when a white paper or solution brief
+  needs outside evidence.
 
 ## 0.1.0 - 2026-11-17
 
