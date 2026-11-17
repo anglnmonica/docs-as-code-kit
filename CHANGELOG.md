@@ -37,6 +37,11 @@ update `VERSION`, and start a new **Unreleased** section.
   network, real-world data, a scenario, and a business case. research-doc
   follows it, and the white paper template points to it.
 
+- **Skills memory,** `skills/MEMORY.md`, which every skill reads before it
+  starts: the writer's house style, lessons from corrections and test
+  runs, and a library of verified public research, starting with private
+  5G in ports. Skills offer to add new lessons and findings.
+
 ### Changed
 
 - The setup script adds the product name from `docs-kit.yml` to the style

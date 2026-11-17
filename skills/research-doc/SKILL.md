@@ -32,6 +32,11 @@ Read these files from the repository root:
   what makes a white paper persuasive. Follow it for white papers and
   solution briefs.
 
+Then read `MEMORY.md` in the folder that holds this skill's folder:
+what the skills have learned from the writer's corrections and earlier
+runs. Follow it unless the current request says otherwise. When the writer
+corrects your work, offer to add the lesson to `MEMORY.md`, dated.
+
 If `docs-kit.yml` doesn't exist, say so, and ask for the product name, the
 readers, and the style guide before you continue.
 
@@ -50,6 +55,10 @@ Before you search, confirm these with the writer:
 Restate the brief in a few lines, and wait for the writer to confirm it.
 
 ## 3. Research
+
+First, check the research library listed in `MEMORY.md` for verified
+findings on the topic. Reuse them after you confirm each source is still
+current, then search for what's missing.
 
 Search for each kind of source below. Prefer the higher rows: they carry
 more weight with technical readers.
@@ -118,7 +127,9 @@ Rules for the notes:
 - If two sources disagree, record both, and don't choose.
 - Note when a figure is more than three years old.
 
-Share the notes, and ask the writer to confirm before you draft. They may
+Share the notes, and ask the writer to confirm before you draft. After
+the writer confirms them, offer to add the new public findings to the
+research library, never confidential ones. They may
 want to drop a source or add their own.
 
 ## 5. Outline

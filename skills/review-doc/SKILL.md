@@ -24,6 +24,11 @@ Read these files from the repository root:
 - The rules at `ai.verify_rules`. The default is `checklists/verify.md`.
 - `terms.yml`: the team's word list.
 
+Then read `MEMORY.md` in the folder that holds this skill's folder:
+what the skills have learned from the writer's corrections and earlier
+runs. Follow it unless the current request says otherwise. When the writer
+corrects your work, offer to add the lesson to `MEMORY.md`, dated.
+
 If `docs-kit.yml` doesn't exist, say so, and ask the writer for the
 product name, the readers, and the style guide before you continue.
 
