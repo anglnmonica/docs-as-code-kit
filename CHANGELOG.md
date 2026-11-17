@@ -32,6 +32,11 @@ update `VERSION`, and start a new **Unreleased** section.
   every finding, cites every outside fact in the draft, and never copies
   other documents.
 
+- **White paper patterns,** a guide to what makes a white paper
+  persuasive: numbered tables and figures, explaining the work before the
+  network, real-world data, a scenario, and a business case. research-doc
+  follows it, and the white paper template points to it.
+
 ### Changed
 
 - The setup script adds the product name from `docs-kit.yml` to the style

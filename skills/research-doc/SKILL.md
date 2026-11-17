@@ -28,6 +28,9 @@ Read these files from the repository root:
 - `checklists/review.md`.
 - `terms.yml`.
 - The template for the document type, at `doc_types.templates_path`.
+- [white-paper-patterns.md](white-paper-patterns.md), next to this skill:
+  what makes a white paper persuasive. Follow it for white papers and
+  solution briefs.
 
 If `docs-kit.yml` doesn't exist, say so, and ask for the product name, the
 readers, and the style guide before you continue.
@@ -62,6 +65,11 @@ more weight with technical readers.
 For research papers, read the abstract, the method, and the results. Note
 the conditions of each result, such as the test setup and the sample size,
 because a figure without its conditions misleads.
+
+Look hardest for real-world data: named deployments and what they
+measured, the cost of the problem in the reader's industry, and adoption
+figures. A real-world results table is the strongest evidence a white paper
+can have.
 
 Stop when each section of the template has evidence, or when new searches
 stop turning up new facts. Usually that's 8 to 20 sources.
@@ -124,6 +132,13 @@ Map the findings to the sections. For each section, list the
 finding numbers that support it. If a section has no evidence, say so
 rather than filling it with general statements.
 
+Plan the tables and figures with the outline, following
+[white-paper-patterns.md](white-paper-patterns.md): at least one per major
+section, a real-world results table, a short scenario that walks through a
+day with the solution in place, and a business case built on real data
+points. List each planned table and figure with its number, caption, and
+the findings it uses.
+
 Then plan your angle: what this document says that the published ones
 don't, based on "What's already been said" in your notes. Share the
 outline with the writer.
@@ -146,8 +161,13 @@ outline with the writer.
    port terminal [4]", not as general truths.
 6. Mark every claim you couldn't confirm, following `checklists/verify.md`.
    Where a fact is missing, write `TODO:` and what's needed.
-7. Follow the style in `docs-kit.yml` and any domain pack that's turned on.
-8. Delete the template's comments.
+7. Number every table and figure, and put an italic caption under each,
+   such as *Table 2. Network requirements by use case.* If you can make
+   a figure, such as a chart of data from the sources or a simple diagram,
+   make it as an image file and deliver it with the draft. Otherwise, write
+   a figure brief in its place, marked `TODO:`.
+8. Follow the style in `docs-kit.yml` and any domain pack that's turned on.
+9. Delete the template's comments.
 
 ## 7. Check the draft
 

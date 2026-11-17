@@ -16,6 +16,9 @@ last_reviewed: "<YYYY-MM-DD>"
   The readers: technical decision makers, who read the summary, and the
   engineers they ask to check it, who read everything else. Write for both.
   Typical length: 6 to 12 pages.
+  For what makes a white paper persuasive, such as tables, figures,
+  real-world data, and a scenario, see
+  skills/research-doc/white-paper-patterns.md.
   Replace every <...> placeholder, and delete these comments when you're done.
 -->
 
