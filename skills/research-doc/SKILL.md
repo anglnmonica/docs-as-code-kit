@@ -86,8 +86,8 @@ stop turning up new facts. Usually that's 8 to 20 sources.
 
 ## 4. Write the research notes
 
-Before you draft, save a research notes file next to where the draft will
-go, named `<draft-name>-research.md`. The writer uses it to check your
+Before you draft, save a research notes file in the same folder as the
+draft, named `<draft-name>-research.md`. The writer uses it to check your
 work, and it isn't published.
 
 ```markdown

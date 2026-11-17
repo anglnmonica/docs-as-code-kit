@@ -16,7 +16,7 @@ at least one table or figure in every major section.
 
 ### Tables
 
-Number every table, and put a short caption under it, in italics:
+Number every table, and put a short caption under it, in italics, such as
 *Table 3. Wireless requirements for mobile robots.* Refer to it in the text
 before it appears.
 
@@ -25,7 +25,7 @@ These table types work well. Pick the ones the topic needs.
 | Table type | Columns | Use it to |
 | --- | --- | --- |
 | Evolution | Stage, systems, connectivity | Show how the industry got here, in the opening sections |
-| Workload | Workload, type of data, network characteristic | Show what each machine or application sends |
+| Workload | Workload, type of data, network characteristic | Show what each machine or app sends |
 | Requirements with verification | Requirement, what it means on site, how to verify it | Turn claims into tests a buyer can run |
 | Planning ranges | Parameter, typical range, why it matters | Give engineers numbers to design with |
 | Technology comparison | Criterion, then one column per option | Compare options fairly, including where the alternative wins |
@@ -36,7 +36,7 @@ These table types work well. Pick the ones the topic needs.
 
 ### Figures
 
-Number every figure, and put a caption under it, in italics:
+Number every figure, and put a caption under it, in italics, such as
 *Figure 2. Scheduled access in private 5G compared with contention in
 Wi-Fi.* Describe what the figure shows in the text too, for readers who
 can't see it.
