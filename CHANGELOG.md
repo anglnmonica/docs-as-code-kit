@@ -24,7 +24,16 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ## Unreleased
 
-Nothing yet.
+### Added
+
+- **`repository.base_path`** in `docs-kit.yml`, for sites published under a
+  folder, such as GitHub Pages project sites at
+  `https://example.github.io/my-docs/`.
+
+### Fixed
+
+- The link check no longer reports every page as broken on a site
+  published under a folder. Found while documenting the Relay demo API.
 
 ## 0.1.0 - 2026-11-17
 
