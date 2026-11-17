@@ -8,6 +8,13 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# Stop if Vale can't load this folder's .vale.ini. Otherwise an empty result
+# would look like a pass.
+if ! vale ls-config > /dev/null 2>&1; then
+  echo "FAIL: Vale couldn't load packs/telecom/tests/.vale.ini. Check that the file exists."
+  exit 1
+fi
+
 # Lines to check: every non-empty line except the first (the instructions).
 # comm needs both lists in text order (10 before 2), not number order.
 expected=$(awk 'NR>1 && NF {print NR}' should-fail.md | LC_ALL=C sort)
