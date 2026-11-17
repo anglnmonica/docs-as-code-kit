@@ -147,6 +147,12 @@ because `docs-kit.yml` is the only file you maintain.
 The workflow runs the same script first, then runs only the checks you
 turned on.
 
+## Versions
+
+The current version is in [`VERSION`](VERSION), and every change is in the
+[changelog](CHANGELOG.md). To stay on a version you've tested, copy the
+kit's files from that version's release on GitHub, instead of from `main`.
+
 ## License
 
 [MIT](LICENSE). Created by [Angelin Monica Selvaraj](https://anglnmonica.github.io).
