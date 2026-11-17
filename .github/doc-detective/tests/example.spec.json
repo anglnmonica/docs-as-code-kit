@@ -1,0 +1,13 @@
+{
+  "description": "Example reader-journey test. Each test follows a path a reader takes through your built site and checks that the content is where the docs say it is. Edit the URL and text to match your site.",
+  "tests": [
+    {
+      "testId": "home-page-loads",
+      "description": "The home page loads and shows its main heading.",
+      "steps": [
+        { "goTo": "http://localhost:4000/" },
+        { "find": { "selector": "h1" } }
+      ]
+    }
+  ]
+}
