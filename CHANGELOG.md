@@ -24,19 +24,7 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ## Unreleased
 
-### Added
-
-- **`repository.base_path`** in `docs-kit.yml`, for sites published under a
-  folder, such as GitHub Pages project sites at
-  `https://example.github.io/my-docs/`.
-
-### Fixed
-
-- The link check no longer reports every page as broken on a site
-  published under a folder. Found while documenting the Relay demo API.
-- The link check skips full links to the site's own address
-  (`project.docs_url`) when it checks a built site. Every page is already
-  checked as a file, and new pages in a pull request aren't published yet.
+Nothing yet.
 
 ## 0.1.0 - 2026-11-17
 
@@ -60,3 +48,14 @@ The first release.
 - **Checklists:** the review checklist, built on guidance for writing docs
   that AI tools can use, and the fact-checking rules both skills follow.
 - **Example review** of a deliberately flawed draft, in `skills/examples/`.
+- **`repository.base_path`** in `docs-kit.yml`, for sites published under a
+  folder, such as GitHub Pages project sites at
+  `https://example.github.io/my-docs/`. The link check uses it to resolve
+  full links the way they work once published.
+- **Link check:** skips full links to the site's own address
+  (`project.docs_url`) when it checks a built site, since every page is
+  already checked as a file. New pages in a pull request aren't published
+  yet, so these links would fail.
+
+Using the kit to document the [Relay demo API](https://anglnmonica.github.io/relay-api-docs/)
+led to the last two changes.
