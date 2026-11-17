@@ -34,6 +34,9 @@ update `VERSION`, and start a new **Unreleased** section.
 
 - The link check no longer reports every page as broken on a site
   published under a folder. Found while documenting the Relay demo API.
+- The link check skips full links to the site's own address
+  (`project.docs_url`) when it checks a built site. Every page is already
+  checked as a file, and new pages in a pull request aren't published yet.
 
 ## 0.1.0 - 2026-11-17
 
