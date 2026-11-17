@@ -23,3 +23,7 @@ The SAS (Spectrum Access System) grants channels.
 The operator holds two PALs (Priority Access Licenses) in the county.
 
 Ports in the UK and EU follow the same steps. Each crane sends about 4 GB.
+
+Mount the SCU5050 on a mast. It's rated IP65 and supports TR-069 over USB.
+
+Each cell uses MIMO (multiple-input, multiple-output) antennas.

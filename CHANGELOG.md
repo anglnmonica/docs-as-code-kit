@@ -38,7 +38,8 @@ update `VERSION`, and start a new **Unreleased** section.
   check's word list, so the check accepts it everywhere, including in
   headings. With the Telecom pack on, it also accepts Wi-Fi in headings.
 - The Telecom pack's acronym rule no longer asks you to define UK, EU, GB,
-  MB, KB, TB, or TODO.
+  MB, KB, TB, USB, or TODO, model numbers such as SCU5050 or IP65, or
+  standard names such as TR-069.
 - write-doc now points to research-doc when a white paper or solution brief
   needs outside evidence.
 
@@ -47,6 +48,8 @@ update `VERSION`, and start a new **Unreleased** section.
 - The Telecom pack's acronym rule flagged plurals, such as PALs, even when
   they were defined, as in PALs (Priority Access Licenses).
 - The rule tests didn't test the acronym rule. They do now.
+- The acronym rule didn't accept definitions with commas, such as
+  MIMO (multiple-input, multiple-output).
 - The Google style flagged US (United States) as the word "us." The style
   check now skips it.
 - The Telecom pack's README listed the reversed-acronym rule as a warning.

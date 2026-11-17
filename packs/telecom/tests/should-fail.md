@@ -33,3 +33,5 @@ Use a 20MHz channel.
 A SAS uses the Spectrum Access System (SAS) to grant channels.
 
 Each site needs one NPN for its sensors.
+
+The cell uses TDD in every band.
