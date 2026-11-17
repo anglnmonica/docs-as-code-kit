@@ -115,7 +115,12 @@ want to drop a source or add their own.
 
 ## 5. Outline
 
-Map the findings to the template's sections. For each section, list the
+If the writer has an outline, use its sections and order instead of the
+template's, and add only what the template requires that the outline
+lacks, such as an executive summary and references. Otherwise, use the
+template's sections.
+
+Map the findings to the sections. For each section, list the
 finding numbers that support it. If a section has no evidence, say so
 rather than filling it with general statements.
 
@@ -134,6 +139,9 @@ outline with the writer.
    numbered reference such as `[3]`, and list the references at the end. A
    solution brief can use fewer references, but every figure still needs
    one.
+   Turn the style check off for the reference list, because source titles
+   aren't your writing: put `<!-- vale off -->` before the list and
+   `<!-- vale on -->` after it.
 5. State figures with their conditions, such as "in a 2024 trial at one
    port terminal [4]", not as general truths.
 6. Mark every claim you couldn't confirm, following `checklists/verify.md`.

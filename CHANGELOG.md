@@ -34,8 +34,23 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ### Changed
 
+- The setup script adds the product name from `docs-kit.yml` to the style
+  check's word list, so the check accepts it everywhere, including in
+  headings. With the Telecom pack on, it also accepts Wi-Fi in headings.
+- The Telecom pack's acronym rule no longer asks you to define UK, EU, GB,
+  MB, KB, TB, or TODO.
 - write-doc now points to research-doc when a white paper or solution brief
   needs outside evidence.
+
+### Fixed
+
+- The Telecom pack's acronym rule flagged plurals, such as PALs, even when
+  they were defined, as in PALs (Priority Access Licenses).
+- The rule tests didn't test the acronym rule. They do now.
+- The Google style flagged US (United States) as the word "us." The style
+  check now skips it.
+- The Telecom pack's README listed the reversed-acronym rule as a warning.
+  It's an error.
 
 ## 0.1.0 - 2026-11-17
 

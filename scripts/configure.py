@@ -95,7 +95,15 @@ def write_styles(config, packs):
     terms = terms or {}
     vocab = STYLES / "config" / "vocabularies" / "Kit"
     vocab.mkdir(parents=True)
-    (vocab / "accept.txt").write_text("\n".join(terms.get("accept") or []) + "\n")
+    accept = list(terms.get("accept") or [])
+    # The product name is always correct, including in headings.
+    product = (config.get("project") or {}).get("product_name") or ""
+    if product and not product.startswith("<"):
+        accept.append(re.escape(product))
+    # Telecom docs use Wi-Fi in headings, where it keeps its capital letters.
+    if "telecom" in packs:
+        accept.append("Wi-Fi")
+    (vocab / "accept.txt").write_text("\n".join(accept) + "\n")
     (vocab / "reject.txt").write_text("\n".join(terms.get("reject") or []) + "\n")
     return style_names, terms
 
@@ -107,7 +115,12 @@ def write_vale(config, style_names):
     voice = style.get("voice") or {}
     base_name = base.capitalize()
 
-    settings = ["# codespell checks spelling.", "Vale.Spelling = NO"]
+    settings = [
+        "# The base style reads US (United States) as the word \"us\". Skip it.",
+        "TokenIgnores = (\\bUS\\b)",
+        "# codespell checks spelling.",
+        "Vale.Spelling = NO",
+    ]
     if voice.get("person", "second") == "first":
         settings += ["# style.voice.person is first."] + [f"{rule} = NO" for rule in rules["first_person"]]
     if voice.get("contractions", True) is False:
