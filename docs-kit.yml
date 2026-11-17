@@ -119,4 +119,5 @@ ai:
   never_invent: true                       # Never make up facts, settings, values, or links.
   unverified_marker: "[unverified]"        # Added after any claim the AI couldn't confirm.
   review_checklist: checklists/review.md   # What the review skill checks a draft against.
+  verify_rules: checklists/verify.md       # How both skills check facts.
   deliver_as: pull_request                 # pull_request | files

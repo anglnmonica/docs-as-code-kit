@@ -35,6 +35,13 @@ white paper, and solution brief. Each one explains who reads that type of
 document and what each section is for. See [templates/](templates/) to
 choose one.
 
+### AI skills
+
+Instructions for an AI assistant, such as Claude, to draft and review
+documents using your templates, style settings, and word list. They never
+state a fact unless a source confirms it: anything unconfirmed is marked
+for a person to check. See [skills/](skills/).
+
 ## Before you begin
 
 You need:
@@ -51,6 +58,8 @@ You need:
    - `scripts/`
    - `packs/`
    - `templates/`
+   - `checklists/`
+   - `skills/`, if you plan to use the AI skills
    - `.github/workflows/docs-checks.yml`
    - `.github/doc-detective/`, if you plan to use the accuracy check
    - `.gitignore` entries, added to your own `.gitignore`
@@ -137,11 +146,6 @@ because `docs-kit.yml` is the only file you maintain.
 
 The workflow runs the same script first, then runs only the checks you
 turned on.
-
-## Coming next
-
-- AI skills that draft and review documents using the same style and
-  templates, and mark any claim they can't verify for a person to confirm
 
 ## License
 
