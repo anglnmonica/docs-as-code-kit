@@ -147,6 +147,9 @@ jobs:
         with:
           args: --config .lychee.toml "${{ needs.config.outputs.content_path }}"
           fail: true
+          # A small set of Markdown docs can have no links yet. A built site
+          # always has links, so the step above keeps the default.
+          failIfEmpty: false
 
   accuracy:
     name: Accuracy (Doc Detective)
