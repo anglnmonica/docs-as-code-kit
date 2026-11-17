@@ -43,6 +43,9 @@ based on what the reader does with the document:
 | Evaluate a technical approach | `white_paper` |
 | Decide whether a product fits their industry | `solution_brief` |
 
+If a white paper or solution brief needs outside evidence, such as
+research papers or industry figures, use the research-doc skill instead.
+
 Tell the writer which type you chose and why, and ask them to confirm
 before you draft. If the request needs two types, such as setup and
 troubleshooting, suggest two documents.

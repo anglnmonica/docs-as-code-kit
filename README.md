@@ -37,8 +37,8 @@ choose one.
 
 ### AI skills
 
-Instructions for an AI assistant, such as Claude, to draft and review
-documents using your templates, style settings, and word list. They never
+Instructions for an AI assistant, such as Claude, to draft, research, and
+review documents using your templates, style settings, and word list. They never
 state a fact unless a source confirms it: anything unconfirmed is marked
 for a person to check. See [skills/](skills/).
 
