@@ -186,8 +186,21 @@ def github_outputs(config, packs):
     return values
 
 
+def check_templates(config):
+    """Warn about doc types that are turned on but have no template."""
+    doc_types = config.get("doc_types") or {}
+    folder = Path(doc_types.get("templates_path", "templates/"))
+    missing = [name for name, on in doc_types.items()
+               if name != "templates_path" and on is True
+               and not (folder / f"{name.replace('_', '-')}.md").exists()]
+    for name in missing:
+        print(f"docs-kit: warning: doc_types.{name} is turned on, but "
+              f"{folder.as_posix().rstrip('/')}/{name.replace('_', '-')}.md doesn't exist.")
+
+
 def main():
     config = load_config()
+    check_templates(config)
     packs = enabled_packs(config)
     style_names, _ = write_styles(config, packs)
     write_vale(config, style_names)

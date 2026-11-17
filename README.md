@@ -27,6 +27,14 @@ works. Turn a pack on in `docs-kit.yml`.
 | --- | --- |
 | [Telecom](packs/telecom/) | Acronym-first definitions, such as CBRS (Citizens Broadband Radio Service), plus standard spellings of terms like Wi-Fi and 5G NR, unit symbols, and unit spacing |
 
+### Templates
+
+A template for each common document type: installation guide,
+configuration guide, how-to, troubleshooting, release notes, API reference,
+white paper, and solution brief. Each one explains who reads that type of
+document and what each section is for. See [templates/](templates/) to
+choose one.
+
 ## Before you begin
 
 You need:
@@ -42,6 +50,7 @@ You need:
    - `terms.yml`
    - `scripts/`
    - `packs/`
+   - `templates/`
    - `.github/workflows/docs-checks.yml`
    - `.github/doc-detective/`, if you plan to use the accuracy check
    - `.gitignore` entries, added to your own `.gitignore`
@@ -131,8 +140,6 @@ turned on.
 
 ## Coming next
 
-- Templates for common document types, such as installation guides,
-  configuration guides, and release notes
 - AI skills that draft and review documents using the same style and
   templates, and mark any claim they can't verify for a person to confirm
 
