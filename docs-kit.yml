@@ -32,7 +32,7 @@ project:
 repository:
   content_path: docs/                      # Folder that holds your docs.
   format: markdown                         # markdown | mdx | asciidoc
-  site_generator: none                     # jekyll | docusaurus | mkdocs | hugo | none
+  site_generator: none                     # jekyll | docusaurus | mkdocs | none
   build_command: ""                        # Such as "bundle exec jekyll build". Leave empty if none.
   build_output: ""                         # Folder the build creates, such as _site/ or build/.
   base_path: ""                            # The folder the site is published under, such as
