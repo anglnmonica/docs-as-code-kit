@@ -114,6 +114,8 @@ test("site checks: llms.txt, sitemap, robots, structured data", () => {
   assert.match(msg("sitemap"), /faq/);
   assert.match(msg("robots"), /GPTBot/);
   assert.match(msg("structured-data"), /3 pages/);
+  const ext = checkSite(dir, "https://ex.com/docs/", { external: ["https://ex.com/docs/gone/"] });
+  assert.doesNotMatch(ext.findings.map((f) => f.message).join(" "), /Missing page/);
 });
 
 test("docs/ai-readiness.md lists every rule", async () => {

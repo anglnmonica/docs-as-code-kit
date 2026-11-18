@@ -176,6 +176,11 @@ You need Node.js 18 or later.
    node scripts/ai-ready/cli.mjs --site _site --base-url https://example.com/docs/ docs/
    ```
 
+If your llms.txt links to another site under the same address, such as a
+GitHub Pages project site at `https://example.github.io/other-project/`,
+add `--external https://example.github.io/other-project/` so the check
+doesn't look for it in your build.
+
 The check exits with status 1 when it finds a problem at the
 `checks.ai_ready.fail_on` level or higher. To fail on warnings too, add
 `--fail-on warning`.

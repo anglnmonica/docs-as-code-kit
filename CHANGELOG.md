@@ -41,6 +41,8 @@ update `VERSION`, and start a new **Unreleased** section.
   search retrieves first for each question in a page's `questions` list.
   review-doc uses it for a retrieval test: it answers each question from
   that section alone.
+- **`--external`** for the site checks, for llms.txt links to another site
+  under the same address, such as another GitHub Pages project site.
 - **Skip rules** with `checks.ai_ready.skip` in `docs-kit.yml`, or
   `--skip` for one run.
 - The AI-readiness checker page compares a page before and after your
