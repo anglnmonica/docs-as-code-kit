@@ -3,6 +3,10 @@
 # accept: product names and terms that the style check should treat as
 #         correct, such as your product name or feature names.
 # reject: words your team has decided not to use. The style check flags them.
+# consistency: groups of terms that readers might take for one thing. The
+#         AI-readiness check flags a page that uses more than one term from a
+#         group, for a person to review. The terms in a group aren't treated
+#         as synonyms: if they mean different things, define each one.
 #
 # Each entry is matched as a regular expression, so "[Dd]ocs-as-code"
 # matches both "Docs-as-code" and "docs-as-code".
@@ -11,3 +15,9 @@ accept:
   - "[Dd]ocs-as-code"
 
 reject: []
+
+consistency: []
+# For example, for telecom docs:
+# consistency:
+#   - ["small cell", "radio", "access point", "AP"]
+#   - ["UE", "device", "end device"]

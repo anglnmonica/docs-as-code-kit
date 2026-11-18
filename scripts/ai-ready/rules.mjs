@@ -101,6 +101,13 @@ export const PAGE_RULES = [
     fix: "Use the destination's title as the link text.",
   },
   {
+    id: "term-consistency",
+    title: "One name for each thing",
+    severity: "suggestion",
+    why: "A reader or an AI tool that sees \"access point\" in one section and \"radio\" in the next can't tell whether they're one device or two.",
+    fix: "Choose one term, and use it throughout. If the terms mean different things, define each one where it first appears.",
+  },
+  {
     id: "questions",
     title: "Questions the page answers",
     severity: "suggestion",
@@ -148,8 +155,10 @@ function parseFrontMatter(lines) {
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     if (line.trim() === "---") return { data, end: i + 1 };
-    const item = line.match(/^\s+-\s+(.*)$/);
-    if (item && key) {
+    // A list item, indented or not: YAML allows "- item" at the start of
+    // the line under its key.
+    const item = line.match(/^\s*-\s+(.*)$/);
+    if (item && key && (data[key] === "" || Array.isArray(data[key]))) {
       if (!Array.isArray(data[key])) data[key] = [];
       data[key].push(unquote(item[1]));
       continue;
@@ -157,7 +166,10 @@ function parseFrontMatter(lines) {
     const kv = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/);
     if (kv) {
       key = kv[1];
-      data[key] = kv[2] === "" ? "" : unquote(kv[2]);
+      const inline = kv[2].match(/^\[(.*)\]\s*$/);
+      data[key] = inline
+        ? inline[1].split(",").map(unquote).filter(Boolean)
+        : kv[2] === "" ? "" : unquote(kv[2]);
     }
   }
   return { data: null, end: 0 };
@@ -187,14 +199,19 @@ function words(s) {
  * @returns {{findings: Array, checked: string[]}} findings, and the ids of the
  *   rules that ran.
  */
-export function checkPage(markdown) {
+export function checkPage(markdown, options = {}) {
   const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
+  const skip = new Set(options.skip || []);
+  const termGroups = (options.termGroups || []).filter((g) => Array.isArray(g) && g.length > 1);
+  if (!termGroups.length) skip.add("term-consistency");
   const findings = [];
-  const add = (id, line, message) =>
-    findings.push({ rule: id, severity: RULE[id].severity, line, message, fix: RULE[id].fix });
+  const add = (id, line, message) => {
+    if (!skip.has(id)) findings.push({ rule: id, severity: RULE[id].severity, line, message, fix: RULE[id].fix });
+  };
 
   const fm = parseFrontMatter(lines);
-  const checked = PAGE_RULES.map((r) => r.id);
+  const checked = PAGE_RULES.map((r) => r.id).filter((id) => !skip.has(id));
+  const termUses = termGroups.map((g) => g.map(() => ({ count: 0, line: 0 })));
 
   // Front matter rules.
   const description = fm.data && (fm.data.description || fm.data.excerpt || fm.data.summary);
@@ -247,6 +264,14 @@ export function checkPage(markdown) {
       lastLevel = level;
       sections.push(section);
       section = { title: heading[2].trim(), line: n, words: 0, firstText: null };
+      continue;
+    }
+
+    // An HTML heading, such as <h2>, also starts a section.
+    const htmlHeading = raw.match(/<h([1-6])\b[^>]*>(.*?)<\/h\1>/i);
+    if (htmlHeading) {
+      sections.push(section);
+      section = { title: htmlHeading[2].replace(/<[^>]+>/g, "").trim(), line: n, words: 0, firstText: null };
       continue;
     }
 
@@ -306,6 +331,16 @@ export function checkPage(markdown) {
     if (num) add("number-units", n, `"${num[0].trim()}" has no unit.`);
     const left = raw.match(LEFTOVER);
     if (left) add("leftover-markers", n, `"${left[0]}" is still in the page.`);
+
+    termGroups.forEach((group, g) =>
+      group.forEach((term, t) => {
+        const found = own.match(termPattern(term));
+        if (found) {
+          termUses[g][t].count += found.length;
+          if (!termUses[g][t].line) termUses[g][t].line = n;
+        }
+      }),
+    );
   }
   sections.push(section);
 
@@ -319,8 +354,100 @@ export function checkPage(markdown) {
     }
   }
 
+  termGroups.forEach((group, g) => {
+    const used = group.map((term, t) => ({ term, ...termUses[g][t] })).filter((u) => u.count);
+    if (used.length > 1) {
+      const list = used.map((u) => `"${u.term}" (${u.count})`);
+      const second = used.map((u) => u.line).sort((a, b) => a - b)[1];
+      add("term-consistency", second, `This page uses ${list.slice(0, -1).join(", ")} and ${list.at(-1)}, which may name one thing.`);
+    }
+  });
+
   findings.sort((a, b) => a.line - b.line);
   return { findings, checked };
+}
+
+// A term as a whole word or phrase. All-capital terms, such as AP, match
+// only in capitals, so "ap" in another word doesn't count.
+function termPattern(term) {
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+  const caps = term === term.toUpperCase() && /[A-Z]/.test(term);
+  return new RegExp(`(?<![\\w-])${escaped}s?(?![\\w-])`, caps ? "g" : "gi");
+}
+
+// ---------------------------------------------------------------------------
+// Retrieval preview
+// ---------------------------------------------------------------------------
+
+const STOP = new Set(
+  "a an and are as at be by can do does for from how i if in is it its my of on or the this to was what when where which who why will with you your".split(" "),
+);
+const tokens = (s) => (s.toLowerCase().match(/[a-z0-9][a-z0-9-]*/g) || []).filter((w) => !STOP.has(w));
+
+/** Split a page into the sections a retrieval system would index. */
+export function splitSections(markdown) {
+  const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
+  const fm = parseFrontMatter(lines);
+  const out = [];
+  const stack = []; // the headings above the current section, by level
+  let cur = { title: "", path: "", line: fm.end + 1, lines: [] };
+  let inCode = false;
+  for (let i = fm.end; i < lines.length; i++) {
+    const raw = lines[i];
+    if (/^\s*(```|~~~)/.test(raw)) inCode = !inCode;
+    const md = !inCode && raw.match(/^(#{1,6})\s+(.*)$/);
+    const html = !inCode && !md && raw.match(/<h([1-6])\b[^>]*>(.*?)<\/h\1>/i);
+    if (md || html) {
+      if (cur.lines.join("").trim()) out.push(cur);
+      const level = md ? md[1].length : Number(html[1]);
+      const title = (md ? md[2] : html[2]).replace(/<[^>]+>/g, "").trim();
+      stack.length = level - 1;
+      // Like many retrieval tools, keep the headings above a section with it,
+      // so "Example request" under "Acknowledge an alert" keeps its context.
+      const path = stack.filter(Boolean).slice(1).join(" > ");
+      stack[level - 1] = title;
+      cur = { title, path, line: i + 1, lines: [] };
+    } else {
+      cur.lines.push(raw);
+    }
+  }
+  if (cur.lines.join("").trim()) out.push(cur);
+  return out.map((s) => ({ title: s.title, path: s.path, line: s.line, text: s.lines.join("\n").trim() }));
+}
+
+/**
+ * Rank a page's sections for a question with BM25, the keyword scoring that
+ * many search systems start from. Real AI tools often use embeddings too,
+ * so this is a preview, not a prediction.
+ */
+export function retrieve(markdown, question, top = 3) {
+  const sections = splitSections(markdown);
+  const docs = sections.map((s) => tokens(`${s.path} ${s.title} ${s.title} ${s.text}`));
+  const avg = docs.reduce((n, d) => n + d.length, 0) / (docs.length || 1);
+  const q = [...new Set(tokens(question))];
+  const df = Object.fromEntries(q.map((t) => [t, docs.filter((d) => d.includes(t)).length]));
+  const k1 = 1.2, b = 0.75, N = docs.length;
+  return sections
+    .map((s, i) => {
+      const d = docs[i];
+      let score = 0;
+      for (const t of q) {
+        const tf = d.filter((w) => w === t).length;
+        if (!tf) continue;
+        const idf = Math.log(1 + (N - df[t] + 0.5) / (df[t] + 0.5));
+        score += (idf * tf * (k1 + 1)) / (tf + k1 * (1 - b + (b * d.length) / avg));
+      }
+      return { ...s, score: Math.round(score * 100) / 100 };
+    })
+    .filter((s) => s.score > 0)
+    .sort((a, b2) => b2.score - a.score)
+    .slice(0, top);
+}
+
+/** The questions listed in a page's front matter. */
+export function pageQuestions(markdown) {
+  const fm = parseFrontMatter(markdown.replace(/\r\n?/g, "\n").split("\n"));
+  return fm.data && Array.isArray(fm.data.questions) ? fm.data.questions.filter((q) => q && !/^</.test(q)) : [];
 }
 
 function checkImage(add, line, alt, src) {

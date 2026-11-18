@@ -109,6 +109,8 @@ jobs:
       # Prove each rule still flags what it should, before trusting its results.
       - name: Test the AI-readiness rules
         run: node --test scripts/ai-ready/rules.test.mjs
+      # Writes .docs-kit/ai-ready.json: the rules to skip and the term groups.
+      - run: pip install pyyaml && python3 scripts/configure.py
 
       # Site checks need the built site.
       - if: needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.site_generator == 'jekyll'

@@ -10,6 +10,8 @@ It writes these files, which you don't edit by hand:
     .vale.ini            Style check settings (Vale)
     .codespellrc         Spelling check settings (codespell)
     .lychee.toml         Link check settings (Lychee)
+    .docs-kit/ai-ready.json  AI-readiness settings: rules to skip, and the
+                         term groups from terms.yml
     .docs-kit/styles/    Style rules from the domain packs you turned on,
                          plus your word list from terms.yml
 
@@ -157,6 +159,17 @@ def write_codespell(config):
     Path(".codespellrc").write_text("\n".join(lines) + "\n")
 
 
+def write_ai_ready(config, terms):
+    """AI-readiness settings for scripts/ai-ready/cli.mjs."""
+    import json
+    ai = (config["checks"].get("ai_ready") or {})
+    groups = [[str(t) for t in group] for group in (terms.get("consistency") or [])
+              if isinstance(group, list) and len(group) > 1]
+    GENERATED.mkdir(exist_ok=True)
+    (GENERATED / "ai-ready.json").write_text(json.dumps(
+        {"skip": list(ai.get("skip") or []), "term_groups": groups}, indent=2) + "\n")
+
+
 def write_lychee(config):
     links = config["checks"].get("links") or {}
     exclude = list(links.get("exclude") or [])
@@ -241,8 +254,9 @@ def main():
     config = load_config()
     check_templates(config)
     packs = enabled_packs(config)
-    style_names, _ = write_styles(config, packs)
+    style_names, terms = write_styles(config, packs)
     write_vale(config, style_names)
+    write_ai_ready(config, terms)
     write_codespell(config)
     write_lychee(config)
 

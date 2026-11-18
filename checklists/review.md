@@ -62,11 +62,13 @@ people, too.
 - [ ] **Must fix:** The AI-readiness check reports no errors. See
   [docs/ai-readiness.md](../docs/ai-readiness.md).
 - [ ] **Should fix:** Each question in the front matter's `questions` list
-  has a clear answer in one section.
+  has a clear answer in one section, and that section answers it when read
+  alone. The `--retrieval` preview shows which section a search finds.
 - [ ] **Should fix:** The first sentence under each heading gives the
   answer, before the background.
 - [ ] **Should fix:** Each thing has one name throughout. The page doesn't
-  call the same device an access point, an AP, and a radio.
+  call the same device an access point, an AP, and a radio. The
+  `term-consistency` rule finds the terms listed in `terms.yml`.
 - [ ] **Should fix:** Facts and figures have a citation or a link.
 
 ## Procedures
