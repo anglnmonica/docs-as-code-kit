@@ -4,6 +4,8 @@ description: "<One sentence: who this solution is for, and what it gives them.>"
 doc_type: solution_brief
 audience: "<buyers in an industry, such as oil and gas operators>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--

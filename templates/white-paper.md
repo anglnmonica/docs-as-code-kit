@@ -4,6 +4,8 @@ description: "<One sentence: the problem this paper addresses, and its conclusio
 doc_type: white_paper
 audience: "<technical decision makers | ...>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--

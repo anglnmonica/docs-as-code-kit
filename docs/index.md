@@ -1,3 +1,11 @@
+---
+title: "Get started with the docs kit"
+description: "An example page that shows the kit's checks at work."
+last_reviewed: "2026-11-17"
+questions:
+  - How do I see a check fail?
+---
+
 # Get started with the docs kit
 
 This page is an example. Replace it with your own docs, or change

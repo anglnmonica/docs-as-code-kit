@@ -86,6 +86,10 @@ checks:
     tests_path: .github/doc-detective/tests/
   rule_tests:
     enabled: true                          # Proves each custom style rule still catches what it should.
+  ai_ready:
+    enabled: true                          # Checks pages for what AI tools and search need. See docs/ai-readiness.md.
+    fail_on: error                         # error | warning. Lower levels are reported only.
+    site: true                             # Also check llms.txt, the sitemap, and robots.txt. Needs build_output.
 
 # ---------------------------------------------------------------------------
 # Document types

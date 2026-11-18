@@ -157,7 +157,8 @@ outline with the writer.
 ## 6. Draft
 
 1. Start from the template, and fill in the front matter. Leave
-   `last_reviewed` as a placeholder for the person who checks the draft.
+   `last_reviewed` as a placeholder for the person who checks the draft. List
+   the questions the paper answers in `questions`.
 2. Write each section from the outline in your own words.
 3. Use the writer's product material for every product fact. Never describe
    the product from what you found on the web.

@@ -5,6 +5,8 @@ doc_type: api_reference
 audience: "<developers | integration engineers | ...>"
 api_version: "<v1>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--
