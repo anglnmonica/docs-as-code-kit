@@ -74,7 +74,7 @@ checks:
   spelling:
     enabled: true
     tool: codespell
-    ignore_words: []                       # Words that are spelled correctly but get flagged, such as [ue].
+    ignore_words: [ue]                     # Words that are spelled correctly but get flagged, such as [ue].
   links:
     enabled: true
     tool: lychee
