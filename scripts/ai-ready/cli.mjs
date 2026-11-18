@@ -79,7 +79,7 @@ for (const file of opts.paths.flatMap(markdownFiles)) {
   const text = fs.readFileSync(file, "utf8");
   const { findings, checked } = checkPage(text, pageOptions);
   const retrieval = opts.retrieval
-    ? pageQuestions(text).map((q) => ({ question: q, sections: retrieve(text, q).map(({ title, line, score }) => ({ title, line, score })) }))
+    ? pageQuestions(text).map((q) => ({ question: q, sections: retrieve(text, q).map(({ title, path, line, score }) => ({ title: path ? `${path} > ${title}` : title, line, score })) }))
     : undefined;
   results.push({ file, findings: findings.map((f) => ({ ...f, file })), checked, retrieval });
 }

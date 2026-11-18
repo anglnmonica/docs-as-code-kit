@@ -389,21 +389,30 @@ export function splitSections(markdown) {
   const lines = markdown.replace(/\r\n?/g, "\n").split("\n");
   const fm = parseFrontMatter(lines);
   const out = [];
-  let cur = { title: "", line: fm.end + 1, lines: [] };
+  const stack = []; // the headings above the current section, by level
+  let cur = { title: "", path: "", line: fm.end + 1, lines: [] };
   let inCode = false;
   for (let i = fm.end; i < lines.length; i++) {
     const raw = lines[i];
     if (/^\s*(```|~~~)/.test(raw)) inCode = !inCode;
-    const h = !inCode && (raw.match(/^#{1,6}\s+(.*)$/) || raw.match(/<h[1-6]\b[^>]*>(.*?)<\/h[1-6]>/i));
-    if (h) {
+    const md = !inCode && raw.match(/^(#{1,6})\s+(.*)$/);
+    const html = !inCode && !md && raw.match(/<h([1-6])\b[^>]*>(.*?)<\/h\1>/i);
+    if (md || html) {
       if (cur.lines.join("").trim()) out.push(cur);
-      cur = { title: h[1].replace(/<[^>]+>/g, "").trim(), line: i + 1, lines: [] };
+      const level = md ? md[1].length : Number(html[1]);
+      const title = (md ? md[2] : html[2]).replace(/<[^>]+>/g, "").trim();
+      stack.length = level - 1;
+      // Like many retrieval tools, keep the headings above a section with it,
+      // so "Example request" under "Acknowledge an alert" keeps its context.
+      const path = stack.filter(Boolean).slice(1).join(" > ");
+      stack[level - 1] = title;
+      cur = { title, path, line: i + 1, lines: [] };
     } else {
       cur.lines.push(raw);
     }
   }
   if (cur.lines.join("").trim()) out.push(cur);
-  return out.map((s) => ({ title: s.title, line: s.line, text: s.lines.join("\n").trim() }));
+  return out.map((s) => ({ title: s.title, path: s.path, line: s.line, text: s.lines.join("\n").trim() }));
 }
 
 /**
@@ -413,7 +422,7 @@ export function splitSections(markdown) {
  */
 export function retrieve(markdown, question, top = 3) {
   const sections = splitSections(markdown);
-  const docs = sections.map((s) => tokens(`${s.title} ${s.title} ${s.text}`));
+  const docs = sections.map((s) => tokens(`${s.path} ${s.title} ${s.title} ${s.text}`));
   const avg = docs.reduce((n, d) => n + d.length, 0) / (docs.length || 1);
   const q = [...new Set(tokens(question))];
   const df = Object.fromEntries(q.map((t) => [t, docs.filter((d) => d.includes(t)).length]));
