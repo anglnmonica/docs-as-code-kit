@@ -32,10 +32,38 @@ update `VERSION`, and start a new **Unreleased** section.
   every finding, cites every outside fact in the draft, and never copies
   other documents.
 
+- **White paper patterns,** a guide to what makes a white paper
+  persuasive: numbered tables and figures, explaining the work before the
+  network, real-world data, a scenario, and a business case. research-doc
+  follows it, and the white paper template points to it.
+
+- **Skills memory,** `skills/MEMORY.md`, which every skill reads before it
+  starts: the writer's house style, lessons from corrections and test
+  runs, and a library of verified public research, starting with private
+  5G in ports. Skills offer to add new lessons and findings.
+
 ### Changed
 
+- The setup script adds the product name from `docs-kit.yml` to the style
+  check's word list, so the check accepts it everywhere, including in
+  headings. With the Telecom pack on, it also accepts Wi-Fi in headings.
+- The Telecom pack's acronym rule no longer asks you to define UK, EU, GB,
+  MB, KB, TB, USB, or TODO, model numbers such as SCU5050 or IP65, or
+  standard names such as TR-069.
 - write-doc now points to research-doc when a white paper or solution brief
   needs outside evidence.
+
+### Fixed
+
+- The Telecom pack's acronym rule flagged plurals, such as PALs, even when
+  they were defined, as in PALs (Priority Access Licenses).
+- The rule tests didn't test the acronym rule. They do now.
+- The acronym rule didn't accept definitions with commas, such as
+  MIMO (multiple-input, multiple-output).
+- The Google style flagged US (United States) as the word "us." The style
+  check now skips it.
+- The Telecom pack's README listed the reversed-acronym rule as a warning.
+  It's an error.
 
 ## 0.1.0 - 2026-11-17
 

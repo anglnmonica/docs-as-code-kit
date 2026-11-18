@@ -12,8 +12,8 @@ packs:
 
 | Rule | What it checks | Level |
 | --- | --- | --- |
-| `AcronymFirst` | Each acronym gets a definition the first time it appears, acronym first: CBRS (Citizens Broadband Radio Service). Common acronyms such as LTE and API are exempt. | Warning |
-| `ExpansionFirst` | Flags the reverse order, Citizens Broadband Radio Service (CBRS), so pages stay consistent. | Warning |
+| `AcronymFirst` | Each acronym gets a definition the first time it appears, acronym first: CBRS (Citizens Broadband Radio Service). Common acronyms such as LTE, API, US, UK, and GB are exempt, and plurals such as PALs match their definition. | Warning |
+| `ExpansionFirst` | Flags the reverse order, Citizens Broadband Radio Service (CBRS), so pages stay consistent. | Error |
 | `Terms` | Standard spelling of common terms, such as Wi-Fi, 5G NR, O-RAN, eNodeB, and IoT. | Error |
 | `Units` | Standard unit symbols, such as MHz, GHz, and dBm. | Error |
 | `UnitSpacing` | A space between a number and its unit: 3.5 GHz, not 3.5GHz. | Error |

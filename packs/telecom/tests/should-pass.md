@@ -10,7 +10,7 @@ The radio unit follows the O-RAN fronthaul specification.
 
 Restart the eNodeB, and then check the gNodeB.
 
-The network runs on CBRS spectrum, from 3.55 GHz to 3.7 GHz.
+The network runs on CBRS (Citizens Broadband Radio Service) spectrum, from 3.55 GHz to 3.7 GHz.
 
 Each channel is 20 MHz wide, and the site reached 900 Mbps downlink.
 
@@ -19,3 +19,11 @@ Set the transmit power to 30 dBm. The uplink is 50 kbps at 10 kHz spacing.
 Deploy sensors for IoT use cases.
 
 The SAS (Spectrum Access System) grants channels.
+
+The operator holds two PALs (Priority Access Licenses) in the county.
+
+Ports in the UK and EU follow the same steps. Each crane sends about 4 GB.
+
+Mount the SCU5050 on a mast. It's rated IP65 and supports TR-069 over USB.
+
+Each cell uses MIMO (multiple-input, multiple-output) antennas.

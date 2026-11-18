@@ -14,16 +14,22 @@ message: "Define '%s' the first time you use it, with the acronym first, like CB
 level: warning
 ignorecase: false
 scope: text
-first: '\b([A-Z][A-Z0-9]{1,6})s?\b'
+# Skips model numbers, such as SCU5050 or IP65 (two or more digits in a
+# row), and standard names, such as TR-069 (followed by a hyphen and a
+# digit).
+first: '\b(?![A-Z]*\d{2,})([A-Z][A-Z0-9]{1,6})(?=s?\b)(?!-\d)'
 # The spelled-out term can be capitalized, as in CBRS (Citizens Broadband
 # Radio Service), or lowercase, as in SME (subject matter expert).
-second: '\b([A-Z][A-Z0-9]{1,6})s?\s+\((?:[A-Za-z][\w-]*[\s/-]*)+\)'
+second: '\b([A-Z][A-Z0-9]{1,6})(?=s?\s+\((?:[A-Za-z][\w-]*[\s/,-]*)+\))'
 # Acronyms that a telecom audience already knows, so they don't need a
 # definition. Add to this list as needed.
 exceptions:
   - AI
   - API
   - AT
+  - EU
+  - GB
+  - KB
   - CEO
   - CSS
   - FAQ
@@ -32,6 +38,7 @@ exceptions:
   - ID
   - IP
   - IT
+  - MB
   - LTE
   - NET
   - NR
@@ -39,7 +46,11 @@ exceptions:
   - PDF
   - RAN
   - RF
+  - TB
+  - TODO
   - UI
+  - UK
   - URL
+  - USB
   - US
   - YAML

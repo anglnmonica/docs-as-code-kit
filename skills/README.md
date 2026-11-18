@@ -13,6 +13,15 @@ word list, and checklists, so its work matches the rest of your docs.
 All three skills follow the same [fact-checking rules](../checklists/verify.md):
 a document never states something as fact unless a source confirms it.
 
+## Memory
+
+[MEMORY.md](MEMORY.md) holds what the skills have learned from real use:
+the writer's house style, process lessons, and a library of verified
+public research, in [research/](research/). Every skill reads it before it
+starts. When a skill gets something wrong and the writer corrects it, the
+skill offers to add a dated lesson, so the skills improve over time. Keep
+confidential details out of it.
+
 ## See an example
 
 [examples/](examples/) has a deliberately flawed draft, the product notes it
@@ -31,12 +40,12 @@ Other AI assistants can follow them, too, as instructions.
 
    ```bash
    mkdir -p .claude/skills
-   cp -r skills/write-doc skills/research-doc skills/review-doc .claude/skills/
+   cp -r skills/write-doc skills/research-doc skills/review-doc skills/research skills/MEMORY.md .claude/skills/
    ```
 
 2. Open Claude Code in the repository, and ask for what you need, such as
-   "Review docs/install-access-point.md", "Write a configuration guide
-   from this spec", or "Research and write a white paper on private 5G
+   "Review docs/install-access-point.md," "Write a configuration guide
+   from this spec," or "Research and write a white paper on private 5G
    in ports."
 
 ### Other AI assistants
