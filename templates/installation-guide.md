@@ -4,6 +4,7 @@ description: "<One sentence: what this guide helps the reader install, and the r
 doc_type: installation_guide
 audience: "<installers | network administrators | ...>"
 product_version: "<version this guide applies to>"
+status: draft
 last_reviewed: "<YYYY-MM-DD>"
 questions:
   - "<A question readers ask that this page answers>"
