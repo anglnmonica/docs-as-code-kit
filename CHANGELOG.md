@@ -85,6 +85,9 @@ update `VERSION`, and start a new **Unreleased** section.
   It's an error.
 - The AI-readiness section-length rule didn't treat HTML headings, such as
   `<h2>`, as the start of a section, so it reported one long section.
+- The AI-readiness check didn't read front matter lists written without
+  indentation (`- item` under `questions:`) or on one line
+  (`questions: [...]`), so it reported a missing `questions` list.
 
 ## 0.1.0 - 2026-11-17
 

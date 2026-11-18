@@ -70,6 +70,14 @@ test("term-consistency is off until a team lists term groups", () => {
   assert.ok(!findings.some((f) => f.rule === "term-consistency"));
 });
 
+test("front matter lists can be unindented or inline", () => {
+  const flat = `---\ntitle: A\ndescription: B\nlast_reviewed: '2026-11-17'\nquestions:\n- How do I list sites?\n---\n\nText.\n`;
+  const inline = `---\ntitle: A\ndescription: B\nlast_reviewed: 2026-11-17\nquestions: [How do I list sites?]\n---\n\nText.\n`;
+  assert.ok(!rules(flat).has("questions"));
+  assert.ok(!rules(inline).has("questions"));
+  assert.deepEqual(pageQuestions(flat), ["How do I list sites?"]);
+});
+
 test("skip turns rules off", () => {
   const md = "# Title\n\nTODO: write this.\n";
   const { findings, checked } = checkPage(md, { skip: ["front-matter", "leftover-markers"] });

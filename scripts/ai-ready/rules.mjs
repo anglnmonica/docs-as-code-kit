@@ -155,8 +155,10 @@ function parseFrontMatter(lines) {
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     if (line.trim() === "---") return { data, end: i + 1 };
-    const item = line.match(/^\s+-\s+(.*)$/);
-    if (item && key) {
+    // A list item, indented or not: YAML allows "- item" at the start of
+    // the line under its key.
+    const item = line.match(/^\s*-\s+(.*)$/);
+    if (item && key && (data[key] === "" || Array.isArray(data[key]))) {
       if (!Array.isArray(data[key])) data[key] = [];
       data[key].push(unquote(item[1]));
       continue;
@@ -164,7 +166,10 @@ function parseFrontMatter(lines) {
     const kv = line.match(/^([A-Za-z_][\w-]*):\s*(.*)$/);
     if (kv) {
       key = kv[1];
-      data[key] = kv[2] === "" ? "" : unquote(kv[2]);
+      const inline = kv[2].match(/^\[(.*)\]\s*$/);
+      data[key] = inline
+        ? inline[1].split(",").map(unquote).filter(Boolean)
+        : kv[2] === "" ? "" : unquote(kv[2]);
     }
   }
   return { data: null, end: 0 };
