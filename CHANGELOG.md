@@ -88,6 +88,8 @@ update `VERSION`, and start a new **Unreleased** section.
 - The AI-readiness check didn't read front matter lists written without
   indentation (`- item` under `questions:`) or on one line
   (`questions: [...]`), so it reported a missing `questions` list.
+- The AI-readiness check reported empty files, such as placeholders, as
+  pages with no front matter. It skips them now.
 
 ## 0.1.0 - 2026-11-17
 
