@@ -90,6 +90,7 @@ checks:
     enabled: true                          # Checks pages for what AI tools and search need. See docs/ai-readiness.md.
     fail_on: error                         # error | warning. Lower levels are reported only.
     site: true                             # Also check llms.txt, the sitemap, and robots.txt. Needs build_output.
+    skip: []                               # Rule IDs to turn off, such as [last-updated]. Term groups go in terms.yml.
 
 # ---------------------------------------------------------------------------
 # Document types

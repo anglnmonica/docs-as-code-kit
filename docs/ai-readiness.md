@@ -7,6 +7,8 @@ questions:
   - How do I run the AI-readiness check on my own computer?
   - What does the review-doc skill check that the AI-readiness script can't?
   - Does passing the AI-readiness check make AI tools rank my page higher?
+  - How do I check that my page uses one term for each thing?
+  - How do I see which section an AI tool would retrieve for a question?
 ---
 
 # AI-readiness checks
@@ -27,14 +29,14 @@ The page and site checks run on every pull request when
 `checks.ai_ready.enabled` is `true` in `docs-kit.yml`. They report
 findings, not a score: each finding names the line, the rule, and the fix.
 
-## What the AI-readiness check can't promise
+## Passing the check doesn't raise a page's rank
 
 No tool can promise how an AI assistant or a search engine ranks a page.
 The AI-readiness check finds problems that make a page harder to quote
 correctly. Fixing them makes the page clearer for every reader, but it
 doesn't guarantee that an AI assistant cites the page.
 
-## Page checks
+## What the page checks look for
 
 | Rule | ID | Level | Why it matters | Fix |
 | --- | --- | --- | --- | --- |
@@ -50,14 +52,53 @@ doesn't guarantee that an AI assistant cites the page.
 | Images described in text | `image-alt` | Warning | AI tools and screen readers can't see images. The alt text is all they get. | Write alt text that says what the image shows. For a diagram, describe the flow or the parts. |
 | Code blocks labeled with a language | `code-language` | Warning | A language label tells tools whether a block is a command, a config file, or output, so they don't run or quote the wrong thing. | Add the language right after the opening fence, such as `bash` or `json`. |
 | Tables with headers | `table-header` | Warning | Tools read a table cell by its column header. A column with no header loses its meaning. | Give every column a header. |
+| One name for each thing | `term-consistency` | Suggestion | A reader or an AI tool that sees "access point" in one section and "radio" in the next can't tell whether they're one device or two. | Choose one term, and use it throughout. If the terms mean different things, define each one where it first appears. |
 | Link text that names the destination | `link-text` | Warning | "Click here" tells a reader or an AI tool nothing about where the link goes. | Use the destination's title as the link text. |
 | Questions the page answers | `questions` | Suggestion | Listing the questions a page answers lets a reviewer, or the review-doc skill, check that each one has a clear answer. | Add a `questions` list to the front matter, with the questions readers ask. |
 
 The page checks skip code blocks, inline code, HTML comments, and text in
 quotation marks, which is usually an example rather than the writer's own
-words.
+words. An HTML heading, such as `<h2>`, starts a section, the same as a
+Markdown heading.
 
-## Site checks
+### Check that each thing has one name
+
+The `term-consistency` rule is off until you list term groups. A term group
+is a set of terms that readers might take for one thing, such as "small
+cell," "radio," and "access point." List the groups under `consistency` in
+`terms.yml`:
+
+```yaml
+consistency:
+  - ["small cell", "radio", "access point", "AP"]
+  - ["UE", "device", "end device"]
+```
+
+The rule flags a page that uses more than one term from a group, and
+counts each one, so a person can decide. The terms in a group aren't
+treated as synonyms. If a page uses two of them on purpose, because they
+mean different things, define each term where it first appears, and skip
+the finding.
+
+A term in capital letters, such as `AP`, matches only in capitals, so the
+"ap" in "map" doesn't count.
+
+### Turn a rule off
+
+To turn a page rule off for every page, list its ID under
+`checks.ai_ready.skip` in `docs-kit.yml`:
+
+```yaml
+checks:
+  ai_ready:
+    skip: [last-updated, questions]
+```
+
+Turn a rule off only when it doesn't fit your docs, such as
+`last-updated` on a site whose generator adds the date. The check still
+lists the skipped rules as not checked.
+
+## What the site checks look for
 
 | Rule | ID | Level | Why it matters | Fix |
 | --- | --- | --- | --- | --- |
@@ -67,7 +108,7 @@ words.
 | Structured data | `structured-data` | Suggestion | Structured data (JSON-LD) tells search engines what a page is, such as a technical article or a how-to. | Add JSON-LD with a type such as `TechArticle` to your page layout. |
 | Markdown copies of pages | `markdown-copies` | Suggestion | The llms.txt proposal suggests publishing a Markdown copy of each page, which AI tools read more reliably than HTML. | Publish `page.md` next to each `page.html`, and link to it from llms.txt. |
 
-## Review checks
+## Review checks that the script can't do
 
 These checks need judgment, so the review-doc skill does them, as part of
 the AI readiness section of `checklists/review.md`:
@@ -77,9 +118,47 @@ the AI readiness section of `checklists/review.md`:
 - **Answer first.** The first sentence under each heading gives the answer,
   before the background.
 - **Consistent names.** One name for each thing. A page doesn't call the
-  same device an access point, an AP, and a radio.
+  same device an access point, an AP, and a radio. The `term-consistency`
+  rule finds the terms in your term groups. The review finds the rest.
 - **Claims have sources.** Facts and figures have a citation or a link.
+- **Retrieval test.** For each question, the reviewer reads only the
+  section that the retrieval preview returns, and answers the question from
+  that section alone. If the answer is wrong, incomplete, or needs another
+  section, the section needs work.
 
+## Preview what an AI tool retrieves
+
+AI tools that answer from your docs, such as a support chatbot, first
+split each page into sections, then retrieve the sections that best match
+the question. The retrieval preview shows which section that would be.
+
+For each question in a page's `questions` list, the preview ranks the
+page's sections with BM25, the keyword scoring that many search systems
+start from, and shows the top section:
+
+```bash
+node scripts/ai-ready/cli.mjs --retrieval docs/
+```
+
+```text
+docs/install.md: 14 of 14 checks pass
+  Question: How do I register a small cell?
+    Retrieves: "Register the small cell" (line 24). Check that this section answers it on its own.
+```
+
+The preview is a guide, not a measurement:
+
+- **It uses keywords only.** Most AI tools also use embeddings, which match
+  meaning as well as words. A section that the preview misses might still
+  be found by an AI tool, and the reverse.
+- **It ranks one page at a time.** A real tool ranks sections from every
+  page in its index.
+- **It doesn't grade the answer.** Whether the section answers the
+  question is the retrieval test, a review check.
+
+When the preview returns the wrong section, the usual fix is a heading
+that uses the reader's words, such as "Register the small cell" rather
+than "Registration."
 ## Run the AI-readiness check on your computer
 
 You need Node.js 18 or later.
@@ -100,6 +179,11 @@ You need Node.js 18 or later.
 The check exits with status 1 when it finds a problem at the
 `checks.ai_ready.fail_on` level or higher. To fail on warnings too, add
 `--fail-on warning`.
+
+The check reads your term groups and skipped rules from
+`.docs-kit/ai-ready.json`. To write that file after you change
+`docs-kit.yml` or `terms.yml`, run `python3 scripts/configure.py`. To skip
+a rule for one run, add `--skip`, such as `--skip last-updated`.
 
 ## Change a rule
 

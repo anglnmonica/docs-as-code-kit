@@ -49,10 +49,12 @@ If you can run commands in the repository, run:
 python3 scripts/configure.py
 vale <document>
 codespell <document>
-node scripts/ai-ready/cli.mjs <document>
+node scripts/ai-ready/cli.mjs --retrieval <document>
 ```
 
-The last command is the AI-readiness check. See `docs/ai-readiness.md`.
+The last command is the AI-readiness check. With `--retrieval`, it also
+shows the section a keyword search retrieves first for each question in
+the page's `questions` list. See `docs/ai-readiness.md`.
 Report their results in your review, grouped with your own findings. If you
 can't run commands, say so in the summary, and note that the pull request
 checks run them.
@@ -71,6 +73,25 @@ For the AI readiness section, read the `questions` list in the front
 matter. For each question, find the one section that answers it, and report
 any question that no section answers clearly. If the page has no
 `questions` list, suggest three to five questions it should answer.
+
+Then run the retrieval test, for each question:
+
+1. Take the section that the retrieval preview returned. If you couldn't
+   run it, take the section whose heading best matches the question.
+2. Read only that section, as if the rest of the page didn't exist, and
+   answer the question from it.
+3. Compare your answer with the full page. Report the question if the
+   section gave a wrong or incomplete answer, needed another section, or
+   wasn't the section that answers it. Suggest the fix: usually a heading
+   in the reader's words, or a fact repeated in the section.
+
+Report the results as a table: question, section retrieved, and whether
+the section answers it alone. This is an AI's judgment, not a measurement,
+so say so in the summary.
+
+For consistent names, list each thing that the page names in more than
+one way. Give each term and the sections it appears in. Don't assume the terms are
+synonyms: ask the writer whether they mean one thing or several.
 
 Skip checklist items that pass. Don't report the same problem more than
 once; if it repeats, report it once and list where else it appears.

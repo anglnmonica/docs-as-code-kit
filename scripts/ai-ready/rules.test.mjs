@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { checkPage, PAGE_RULES, summarize } from "./rules.mjs";
+import { checkPage, PAGE_RULES, summarize, retrieve, pageQuestions } from "./rules.mjs";
 import { checkSite } from "./site.mjs";
 
 const FM = `---
@@ -19,7 +19,9 @@ questions:
 ---
 `;
 
-const rules = (md) => new Set(checkPage(md).findings.map((f) => f.rule));
+// One term group, as a team would list it under consistency: in terms.yml.
+const OPTIONS = { termGroups: [["small cell", "radio", "access point", "AP"]] };
+const rules = (md, options = OPTIONS) => new Set(checkPage(md, options).findings.map((f) => f.rule));
 const page = (body) => `${FM}\n${body}\n`;
 
 const CASES = {
@@ -36,6 +38,7 @@ const CASES = {
   "image-alt": [page("## Setup\n\n![](setup.png)\n\n![Architecture](images/architecture.png)"), page("## Setup\n\n![The radio mounted on a pole](setup.png)\n\n![Devices connect to small cells, which connect to the 5G core](images/architecture.png)")],
   "code-language": [page("## Run\n\n```\nnpm test\n```"), page("## Run\n\n```bash\nnpm test\n```")],
   "table-header": [page("## Bands\n\n| Band | |\n| --- | --- |\n| n48 | CBRS |"), page("## Bands\n\n| Band | Use |\n| --- | --- |\n| n48 | CBRS |")],
+  "term-consistency": [page("## Power\n\nThe small cell needs 48 V. Mount the radio on a pole."), page("## Power\n\nThe small cell needs 48 V. Mount the small cell on a pole. The map shows each site.")],
   "link-text": [page("## Docs\n\nFor details, [click here](https://example.com)."), page("## Docs\n\nSee [Install the radio](https://example.com).")],
 };
 
@@ -55,9 +58,35 @@ test("ignores code blocks, inline code, and HTML comments", () => {
 
 test("a clean page passes every check", () => {
   const md = page("## Register the radio\n\nThe radio registers with the SAS when it starts.\n\n```bash\nradio register\n```");
-  const { findings, checked } = checkPage(md);
+  const { findings, checked } = checkPage(md, OPTIONS);
   assert.deepEqual(findings, []);
   assert.equal(summarize(findings, checked).passed, PAGE_RULES.length);
+});
+
+test("term-consistency is off until a team lists term groups", () => {
+  const md = page("## Power\n\nThe small cell needs 48 V. Mount the radio on a pole.");
+  const { findings, checked } = checkPage(md);
+  assert.ok(!checked.includes("term-consistency"));
+  assert.ok(!findings.some((f) => f.rule === "term-consistency"));
+});
+
+test("skip turns rules off", () => {
+  const md = "# Title\n\nTODO: write this.\n";
+  const { findings, checked } = checkPage(md, { skip: ["front-matter", "leftover-markers"] });
+  assert.ok(!findings.some((f) => f.rule === "front-matter" || f.rule === "leftover-markers"));
+  assert.ok(!checked.includes("front-matter"));
+});
+
+test("an HTML heading starts a new section", () => {
+  const md = page(`<h2>One</h2>\n\n${"word ".repeat(300)}\n\n<h2>Two</h2>\n\nThe radio needs power. ${"word ".repeat(300)}`);
+  assert.ok(!rules(md).has("section-length"));
+});
+
+test("retrieve ranks the section that answers the question first", () => {
+  const md = page("## Install the radio\n\nMount the radio on a pole.\n\n## Register with the SAS\n\nThe SAS grants spectrum. Register each radio with the SAS before it transmits.");
+  const top = retrieve(md, "How do I register a radio with the SAS?");
+  assert.equal(top[0].title, "Register with the SAS");
+  assert.deepEqual(pageQuestions(md), ["How do I register a small cell?"]);
 });
 
 test("site checks: llms.txt, sitemap, robots, structured data", () => {
