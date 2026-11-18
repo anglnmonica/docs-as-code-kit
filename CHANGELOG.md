@@ -26,6 +26,13 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ### Added
 
+- **AI-readiness check,** which finds what makes pages hard for AI tools
+  and search to quote correctly: 14 page rules, such as sections that don't
+  make sense on their own and dates like "last year," and 5 site rules,
+  such as a broken llms.txt. It reports findings, not a score. The same
+  rules run in CI and in a browser. The review-doc skill adds the checks
+  that need judgment, such as whether each question in a page's new
+  `questions` list has a clear answer. See `docs/ai-readiness.md`.
 - **research-doc skill,** which researches a topic on the web, in research
   papers, and in published white papers and solution briefs, then drafts a
   white paper or solution brief. It saves research notes with a source for

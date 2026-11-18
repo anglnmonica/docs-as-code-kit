@@ -49,8 +49,10 @@ If you can run commands in the repository, run:
 python3 scripts/configure.py
 vale <document>
 codespell <document>
+node scripts/ai-ready/cli.mjs <document>
 ```
 
+The last command is the AI-readiness check. See `docs/ai-readiness.md`.
 Report their results in your review, grouped with your own findings. If you
 can't run commands, say so in the summary, and note that the pull request
 checks run them.
@@ -64,6 +66,11 @@ type. For each problem:
 - Say what's wrong, and why it matters to the reader.
 - Suggest a fix. If the fix needs a fact you don't have, write `TODO:` and
   what's needed. Never suggest an invented value.
+
+For the AI readiness section, read the `questions` list in the front
+matter. For each question, find the one section that answers it, and report
+any question that no section answers clearly. If the page has no
+`questions` list, suggest three to five questions it should answer.
 
 Skip checklist items that pass. Don't report the same problem more than
 once; if it repeats, report it once and list where else it appears.
@@ -84,7 +91,7 @@ Use this format:
 **Verdict:** <Ready to publish | Ready after fixes | Needs rework>
 <One or two sentences on the main reason.>
 
-**Checks run:** <Vale, codespell, or "Not run: no command access">
+**Checks run:** <Vale, codespell, AI readiness, or "Not run: no command access">
 
 ### Must fix
 1. **<Section or line>:** "<quoted text>"

@@ -6,6 +6,8 @@ audience: "<customers | administrators | ...>"
 product_version: "<version>"
 release_date: "<YYYY-MM-DD>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--

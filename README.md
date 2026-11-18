@@ -17,6 +17,7 @@ which style guide to follow, and which domain rules to add, all in
 | Spelling | [codespell](https://github.com/codespell-project/codespell) | Common misspellings |
 | Links | [Lychee](https://lychee.cli.rs) | Broken internal and external links. Also runs weekly, because outside pages can break when your docs don't change. |
 | Accuracy | [Doc Detective](https://doc-detective.com) | A page that no longer matches what the docs say, found by walking through the built site like a reader |
+| AI readiness | The kit's own check, in `scripts/ai-ready/` | What makes a page hard for AI tools and search to quote correctly, such as sections that don't make sense on their own, dates like "last year," and a broken llms.txt. See [docs/ai-readiness.md](docs/ai-readiness.md). |
 
 ### Domain packs
 

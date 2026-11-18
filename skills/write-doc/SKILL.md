@@ -77,7 +77,8 @@ For each fact you need but don't have, write a question for the writer.
 
 1. Start from the template at `doc_types.templates_path`.
 2. Fill in the front matter. Set `doc_type`, and leave `last_reviewed` as a
-   placeholder for the person who checks the draft.
+   placeholder for the person who checks the draft. List three to five
+   questions readers ask that the page answers, in `questions`.
 3. Write each section from your fact list, following the guidance in the
    template's comments.
 4. Follow the style in `docs-kit.yml`: the base style guide, the voice
@@ -99,6 +100,7 @@ the style and spelling checks:
 python3 scripts/configure.py
 vale <draft>
 codespell <draft>
+node scripts/ai-ready/cli.mjs <draft>
 ```
 
 ## 7. Deliver

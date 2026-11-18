@@ -43,6 +43,10 @@ jobs:
       build_output: ${{ steps.read.outputs.build_output }}
       base_path: ${{ steps.read.outputs.base_path }}
       doc_detective_tests: ${{ steps.read.outputs.doc_detective_tests }}
+      ai_ready: ${{ steps.read.outputs.ai_ready }}
+      ai_ready_fail_on: ${{ steps.read.outputs.ai_ready_fail_on }}
+      ai_ready_site: ${{ steps.read.outputs.ai_ready_site }}
+      docs_url: ${{ steps.read.outputs.docs_url }}
     steps:
       - uses: actions/checkout@v5
       - run: pip install pyyaml
@@ -91,6 +95,45 @@ jobs:
       - run: pip install pyyaml
       - name: Test each domain pack's rules
         run: bash scripts/test-packs.sh
+
+  ai-ready:
+    name: AI readiness
+    needs: config
+    if: needs.config.outputs.ai_ready == 'true' && github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # Prove each rule still flags what it should, before trusting its results.
+      - name: Test the AI-readiness rules
+        run: node --test scripts/ai-ready/rules.test.mjs
+
+      # Site checks need the built site.
+      - if: needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.site_generator == 'jekyll'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - if: needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.site_generator == 'docusaurus'
+        run: npm ci
+      - if: needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.site_generator == 'mkdocs'
+        run: pip install -r requirements.txt
+      - name: Build the site
+        if: needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.build_command != ''
+        run: ${{ needs.config.outputs.build_command }}
+
+      - name: Check pages, and the site if it was built
+        env:
+          CONTENT: ${{ needs.config.outputs.content_path }}
+          FAIL_ON: ${{ needs.config.outputs.ai_ready_fail_on }}
+          SITE: ${{ needs.config.outputs.ai_ready_site == 'true' && needs.config.outputs.build_output || '' }}
+          BASE_URL: ${{ needs.config.outputs.docs_url }}
+        run: |
+          args=(--fail-on "$FAIL_ON")
+          if [ -n "$SITE" ]; then args+=(--site "$SITE" --base-url "$BASE_URL"); fi
+          node scripts/ai-ready/cli.mjs "${args[@]}" "$CONTENT"
 
   spelling:
     name: Spelling (codespell)

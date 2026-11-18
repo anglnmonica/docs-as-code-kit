@@ -56,6 +56,7 @@ tools can sort them:
 | `audience` | Who the page is for. |
 | `product_version` | The version the page applies to. API references use `api_version`. |
 | `last_reviewed` | When someone last checked the page against the product. |
+| `questions` | The questions readers ask that the page answers. The AI-readiness check and the review-doc skill use them. |
 
 Release notes also have `release_date`. Delete any field your site
 generator doesn't use.

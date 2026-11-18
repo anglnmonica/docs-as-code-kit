@@ -181,6 +181,18 @@ def write_lychee(config):
     Path(".lychee.toml").write_text("\n".join(lines) + "\n")
 
 
+def site_url(config):
+    """The published address of the docs, with the base path, ending in /."""
+    url = ((config.get("project") or {}).get("docs_url", "") or "").strip()
+    if not url.startswith("http") or "<" in url:
+        return ""
+    base = ((config.get("repository") or {}).get("base_path", "") or "").strip("/")
+    url = url.rstrip("/")
+    if base and not url.endswith("/" + base):
+        url += "/" + base
+    return url + "/"
+
+
 def github_outputs(config, packs):
     checks = config["checks"]
     repo = config["repository"]
@@ -203,6 +215,10 @@ def github_outputs(config, packs):
         "build_output": repo.get("build_output", "") or "",
         "base_path": (repo.get("base_path", "") or "").strip("/"),
         "doc_detective_tests": (checks.get("accuracy") or {}).get("tests_path", ".github/doc-detective/tests/"),
+        "ai_ready": on("ai_ready"),
+        "ai_ready_fail_on": (checks.get("ai_ready") or {}).get("fail_on", "error"),
+        "ai_ready_site": str(bool((checks.get("ai_ready") or {}).get("site", False)) and bool(repo.get("build_output"))).lower(),
+        "docs_url": site_url(config),
     }
     if values["accuracy"] == "true" and not values["build_output"]:
         fail("checks.accuracy is turned on, but repository.build_output is empty.")

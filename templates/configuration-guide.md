@@ -5,6 +5,8 @@ doc_type: configuration_guide
 audience: "<network administrators | ...>"
 product_version: "<version this guide applies to>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--

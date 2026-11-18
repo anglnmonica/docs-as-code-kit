@@ -5,6 +5,8 @@ doc_type: how_to
 audience: "<who does this task>"
 product_version: "<version this page applies to>"
 last_reviewed: "<YYYY-MM-DD>"
+questions:
+  - "<A question readers ask that this page answers>"
 ---
 
 <!--
