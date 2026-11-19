@@ -5,6 +5,7 @@ doc_type: release_notes
 audience: "<customers | administrators | ...>"
 product_version: "<version>"
 release_date: "<YYYY-MM-DD>"
+status: draft
 last_reviewed: "<YYYY-MM-DD>"
 questions:
   - "<A question readers ask that this page answers>"

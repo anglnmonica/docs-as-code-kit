@@ -26,6 +26,16 @@ update `VERSION`, and start a new **Unreleased** section.
 
 ### Added
 
+- **Docs health report** (`scripts/health/report.mjs`): every page's
+  status, review date, AI-readiness score, and questions, with the pages
+  that need attention first. CI builds it on every pull request and every
+  Monday, and you can publish it with your site. See
+  `docs/docs-health.md`.
+- **Page status:** templates start with `status: draft`. The new Publish
+  readiness check fails a pull request that would merge a draft page.
+- **Reviewers:** `review.owners` in `docs-kit.yml` becomes
+  `.github/CODEOWNERS`, so GitHub asks the right reviewers for each folder.
+
 - **AI-readiness check,** which finds what makes pages hard for AI tools
   and search to quote correctly: 14 page rules, such as sections that don't
   make sense on their own and dates like "last year," and 5 site rules,

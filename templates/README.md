@@ -55,7 +55,8 @@ tools can sort them:
 | `doc_type` | The template the page was made from. |
 | `audience` | Who the page is for. |
 | `product_version` | The version the page applies to. API references use `api_version`. |
-| `last_reviewed` | When someone last checked the page against the product. |
+| `status` | Where the page is in review: `draft` while you write it, `in-review` when you open the pull request, and `published` once it's approved. The publish readiness check fails a pull request that still has a `draft` page. |
+| `last_reviewed` | When someone last checked the page against the product. The docs health report marks the page "Review due" when this date is older than `checks.health.review_every_days`. |
 | `questions` | The questions readers ask that the page answers. The AI-readiness check and the review-doc skill use them. |
 
 Release notes also have `release_date`. Delete any field your site

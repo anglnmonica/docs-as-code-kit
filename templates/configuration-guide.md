@@ -4,6 +4,7 @@ description: "<One sentence: what the reader sets up, and why they'd want it.>"
 doc_type: configuration_guide
 audience: "<network administrators | ...>"
 product_version: "<version this guide applies to>"
+status: draft
 last_reviewed: "<YYYY-MM-DD>"
 questions:
   - "<A question readers ask that this page answers>"

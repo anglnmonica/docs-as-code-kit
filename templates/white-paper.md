@@ -3,6 +3,7 @@ title: "<Title that names the problem or the outcome>"
 description: "<One sentence: the problem this paper addresses, and its conclusion.>"
 doc_type: white_paper
 audience: "<technical decision makers | ...>"
+status: draft
 last_reviewed: "<YYYY-MM-DD>"
 questions:
   - "<A question readers ask that this page answers>"

@@ -18,6 +18,8 @@ which style guide to follow, and which domain rules to add, all in
 | Links | [Lychee](https://lychee.cli.rs) | Broken internal and external links. Also runs weekly, because outside pages can break when your docs don't change. |
 | Accuracy | [Doc Detective](https://doc-detective.com) | A page that no longer matches what the docs say, found by walking through the built site like a reader |
 | AI readiness | The kit's own check, in `scripts/ai-ready/` | What makes a page hard for AI tools and search to quote correctly, such as sections that don't make sense on their own, dates like "last year," and a broken llms.txt. See [docs/ai-readiness.md](docs/ai-readiness.md). |
+| Publish readiness | The kit's own check, in `scripts/health/` | A page still marked `status: draft` in a pull request |
+| Docs health | The kit's own report, in `scripts/health/` | Which pages are overdue for review, unfinished, or hard for AI tools to use, in one report you can publish with your site. See [docs/docs-health.md](docs/docs-health.md). |
 
 ### Domain packs
 
@@ -91,6 +93,8 @@ changes:
 | Fail on style warnings, not just errors | `checks.style.fail_on: warning` |
 | Skip a site that blocks link checkers | Add it to `checks.links.exclude` |
 | Turn off a check | `checks.<check>.enabled: false` |
+| Mark a page's review as due after 90 days | `checks.health.review_every_days: 90` |
+| Ask a team to review a folder | Add it to `review.owners`, then commit `.github/CODEOWNERS` |
 
 ### Turn on the accuracy check
 

@@ -91,6 +91,25 @@ checks:
     fail_on: error                         # error | warning. Lower levels are reported only.
     site: true                             # Also check llms.txt, the sitemap, and robots.txt. Needs build_output.
     skip: []                               # Rule IDs to turn off, such as [last-updated]. Term groups go in terms.yml.
+  health:
+    enabled: true                          # Builds a report on every page: status, review date, AI readiness. See docs/docs-health.md.
+    review_every_days: 180                 # A page is "Review due" when last_reviewed is older than this.
+    publish: true                          # Also publish the report with the site, at <docs_url>/docs-health/. Needs build_output.
+  publish_readiness:
+    enabled: true                          # Fails a pull request that would merge a page marked status: draft.
+
+# ---------------------------------------------------------------------------
+# Reviewers
+# Who reviews which docs. The setup script writes these to
+# .github/CODEOWNERS, so GitHub asks the right reviewers on every pull
+# request. Use GitHub usernames or teams, such as @octocat or @org/docs.
+# ---------------------------------------------------------------------------
+review:
+  owners: []                               # For example:
+                                           #   - path: docs/
+                                           #     reviewers: ["@docs-lead"]
+                                           #   - path: docs/api/
+                                           #     reviewers: ["@api-team", "@docs-lead"]
 
 # ---------------------------------------------------------------------------
 # Document types

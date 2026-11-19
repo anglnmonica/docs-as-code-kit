@@ -12,6 +12,8 @@ It writes these files, which you don't edit by hand:
     .lychee.toml         Link check settings (Lychee)
     .docs-kit/ai-ready.json  AI-readiness settings: rules to skip, and the
                          term groups from terms.yml
+    .docs-kit/health.json  Docs health settings: when a review is due
+    .github/CODEOWNERS   Reviewers, from review.owners (only when it's set)
     .docs-kit/styles/    Style rules from the domain packs you turned on,
                          plus your word list from terms.yml
 
@@ -170,6 +172,49 @@ def write_ai_ready(config, terms):
         {"skip": list(ai.get("skip") or []), "term_groups": groups}, indent=2) + "\n")
 
 
+def write_health(config):
+    """Docs health settings for scripts/health/report.mjs."""
+    import json
+    health = config["checks"].get("health") or {}
+    days = health.get("review_every_days", 180)
+    if not isinstance(days, int) or days < 1:
+        fail("checks.health.review_every_days must be a whole number of days, such as 180.")
+    GENERATED.mkdir(exist_ok=True)
+    (GENERATED / "health.json").write_text(json.dumps({"review_every_days": days}, indent=2) + "\n")
+
+
+CODEOWNERS_HEADER = "# Written by scripts/configure.py from review.owners in docs-kit.yml."
+
+
+def write_codeowners(config):
+    """Turn review.owners into .github/CODEOWNERS.
+
+    Leaves a CODEOWNERS file alone if a person wrote it, so the kit never
+    overwrites a team's own rules.
+    """
+    owners = (config.get("review") or {}).get("owners") or []
+    if not owners:
+        return
+    lines = [CODEOWNERS_HEADER, "# Edit docs-kit.yml, not this file. Later lines win.", ""]
+    for entry in owners:
+        path = str((entry or {}).get("path", "")).strip()
+        reviewers = [str(r).strip() for r in (entry or {}).get("reviewers") or [] if str(r).strip()]
+        if not path or not reviewers:
+            fail("Each review.owners entry needs a path and at least one reviewer.")
+        bad = [r for r in reviewers if not r.startswith("@") and "@" not in r]
+        if bad:
+            fail(f"review.owners: {', '.join(bad)} must be a GitHub @username, an @org/team, or an email address.")
+        pattern = path if path.startswith("/") or path.startswith("*") else "/" + path
+        lines.append(f"{pattern} {' '.join(reviewers)}")
+    target = Path(".github/CODEOWNERS")
+    if target.exists() and not target.read_text().startswith(CODEOWNERS_HEADER):
+        print("docs-kit: warning: .github/CODEOWNERS wasn't written by the kit, so it's left as is. "
+              "Delete it to let the kit manage reviewers from docs-kit.yml.")
+        return
+    target.parent.mkdir(exist_ok=True)
+    target.write_text("\n".join(lines) + "\n")
+
+
 def write_lychee(config):
     links = config["checks"].get("links") or {}
     exclude = list(links.get("exclude") or [])
@@ -232,6 +277,9 @@ def github_outputs(config, packs):
         "ai_ready_fail_on": (checks.get("ai_ready") or {}).get("fail_on", "error"),
         "ai_ready_site": str(bool((checks.get("ai_ready") or {}).get("site", False)) and bool(repo.get("build_output"))).lower(),
         "docs_url": site_url(config),
+        "health": on("health"),
+        "health_publish": str(bool((checks.get("health") or {}).get("publish", False)) and bool(repo.get("build_output"))).lower(),
+        "publish_readiness": on("publish_readiness"),
     }
     if values["accuracy"] == "true" and not values["build_output"]:
         fail("checks.accuracy is turned on, but repository.build_output is empty.")
@@ -257,6 +305,8 @@ def main():
     style_names, terms = write_styles(config, packs)
     write_vale(config, style_names)
     write_ai_ready(config, terms)
+    write_health(config)
+    write_codeowners(config)
     write_codespell(config)
     write_lychee(config)
 

@@ -4,6 +4,7 @@ description: "<One sentence: the problems this page helps the reader fix.>"
 doc_type: troubleshooting
 audience: "<administrators | support engineers | ...>"
 product_version: "<version this page applies to>"
+status: draft
 last_reviewed: "<YYYY-MM-DD>"
 questions:
   - "<A question readers ask that this page answers>"
