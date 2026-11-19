@@ -79,6 +79,14 @@ workflow that deploys your site, after the build step:
   run: node scripts/health/report.mjs --title "Docs health" --out site/docs-health docs/
 ```
 
+To add links at the top of the report, such as back to your docs, add
+`--link "LABEL=URL"` once for each link:
+
+```bash
+node scripts/health/report.mjs --out site/docs-health \
+  --link "Back to the docs=https://example.com/docs/" docs/
+```
+
 Replace `site/` with your `repository.build_output` folder and `docs/` with
 your `repository.content_path` folder. The page tells search engines not to
 index it.
