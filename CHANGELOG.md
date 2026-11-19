@@ -35,6 +35,8 @@ update `VERSION`, and start a new **Unreleased** section.
   readiness check fails a pull request that would merge a draft page.
 - **Reviewers:** `review.owners` in `docs-kit.yml` becomes
   `.github/CODEOWNERS`, so GitHub asks the right reviewers for each folder.
+- **Report links:** `--link "LABEL=URL"` adds links to a bar at the top of
+  the docs health report, such as back to your docs.
 
 - **AI-readiness check,** which finds what makes pages hard for AI tools
   and search to quote correctly: 14 page rules, such as sections that don't
